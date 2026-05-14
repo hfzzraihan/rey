@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Nastar — Solusi Pengiriman Terpercaya</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ══════════════ LOGIN ══════════════ -->
+  <div class="screen active" id="s-login">
+    <div style="overflow-y:auto;flex:1;">
+      <div class="auth-hero">
+        <span class="auth-logo-icon">🚚</span>
+        <div class="auth-logo">Nastar</div>
+        <div class="auth-tag">Solusi Pengiriman Terpercaya</div>
+      </div>
+      <div class="auth-body">
+        <div class="auth-h">Selamat Datang!</div>
+        <div class="auth-s">Masuk ke akun Nastar Anda</div>
+        <div class="form-grp">
+          <label class="form-lbl">📱 Nomor HP</label>
+          <input type="tel" inputmode="numeric" pattern="[0-9]*" class="form-inp" id="l-phone" placeholder="08xxxxxxxxxx">
+        </div>
+        <div class="form-grp">
+          <label class="form-lbl">🔐 PIN</label>
+          <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" class="form-inp" id="l-pin" placeholder="Masukkan 6 digit PIN">
+        </div>
+        <div class="auth-links">
+          <span class="link" onclick="goTo('s-signup')">+ Daftar Akun</span>
+          <span class="link" onclick="goTo('s-forgot')">Lupa PIN?</span>
+        </div>
+        <div class="mt20">
+          <button class="btn btn-primary" onclick="doLogin()">Masuk Sekarang →</button>
+        </div>
+        <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--muted);">Demo: masukkan nomor & PIN apa saja</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ SIGNUP ══════════════ -->
+  <div class="screen" id="s-signup">
+    <div style="overflow-y:auto;flex:1;">
+      <div class="auth-hero" style="padding-top:52px;">
+        <button class="back-btn" style="position:absolute;left:20px;top:52px;z-index:2;" onclick="goTo('s-login')">←</button>
+        <span class="auth-logo-icon">✨</span>
+        <div class="auth-logo">Daftar Akun</div>
+        <div class="auth-tag">Bergabung bersama ribuan pengguna</div>
+      </div>
+      <div class="auth-body">
+        <div class="auth-h">Buat Akun Baru</div>
+        <div class="auth-s">Isi data diri Anda dengan benar</div>
+        <div class="form-grp">
+          <label class="form-lbl">👤 Nama Lengkap</label>
+          <input type="text" class="form-inp" id="su-name" placeholder="Nama sesuai KTP">
+        </div>
+        <div class="form-grp">
+          <label class="form-lbl">📱 Nomor HP</label>
+          <input type="tel" inputmode="numeric" pattern="[0-9]*" class="form-inp" id="su-phone" placeholder="08xxxxxxxxxx">
+        </div>
+        <div class="form-grp">
+          <label class="form-lbl">🔐 Buat PIN (6 Digit)</label>
+          <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" class="form-inp" id="su-pin" placeholder="6 digit angka">
+        </div>
+        <div class="form-grp">
+          <label class="form-lbl">🔐 Konfirmasi PIN</label>
+          <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" class="form-inp" id="su-pin2" placeholder="Ulangi PIN Anda">
+        </div>
+        <div class="mt8">
+          <button class="btn btn-primary" onclick="doSignup()">Daftar Sekarang 🎉</button>
+        </div>
+        <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--muted);">Sudah punya akun? <span class="link" onclick="goTo('s-login')">Masuk</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ FORGOT PIN ══════════════ -->
+  <div class="screen" id="s-forgot">
+    <div style="overflow-y:auto;flex:1;">
+      <div class="auth-hero" style="padding-top:52px;">
+        <button class="back-btn" style="position:absolute;left:20px;top:52px;z-index:2;" onclick="goTo('s-login')">←</button>
+        <span class="auth-logo-icon">🔑</span>
+        <div class="auth-logo">Reset PIN</div>
+        <div class="auth-tag">Ikuti 2 langkah mudah</div>
+      </div>
+      <div class="auth-body">
+        <div class="step-bar">
+          <div class="step-dot on" id="fp-d1"></div>
+          <div class="step-dot" id="fp-d2"></div>
+        </div>
+        <div id="fp-s1">
+          <div class="auth-h">Verifikasi Nomor HP</div>
+          <div class="auth-s">Masukkan nomor HP yang terdaftar</div>
+          <div class="form-grp">
+            <label class="form-lbl">📱 Nomor HP Terdaftar</label>
+            <input type="tel" inputmode="numeric" pattern="[0-9]*" class="form-inp" id="fp-phone" placeholder="08xxxxxxxxxx">
+          </div>
+          <button class="btn btn-primary" onclick="fpNext()">Verifikasi →</button>
+        </div>
+        <div id="fp-s2" style="display:none;">
+          <div class="auth-h">Buat PIN Baru</div>
+          <div class="auth-s">Pastikan PIN mudah diingat & aman</div>
+          <div class="form-grp">
+            <label class="form-lbl">🔐 PIN Baru</label>
+            <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" class="form-inp" id="fp-new" placeholder="6 digit angka">
+          </div>
+          <div class="form-grp">
+            <label class="form-lbl">🔐 Konfirmasi PIN Baru</label>
+            <input type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" class="form-inp" id="fp-new2" placeholder="Ulangi PIN baru">
+          </div>
+          <button class="btn btn-primary" onclick="fpSave()">Simpan PIN Baru ✅</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ DASHBOARD ══════════════ -->
+  <div class="screen" id="s-dash">
+    <div class="topbar">
+      <div class="topbar-row">
+        <div>
+          <div class="logo"><span class="logo-icon">🚚</span>Nastar</div>
+          <div class="topbar-sub">Halo, <span id="gr-name">Pengguna</span> 👋 Selamat datang!</div>
+        </div>
+        <button class="icon-btn" onclick="doLogout()" title="Keluar">🚪</button>
+      </div>
+    </div>
+    <div class="body-scroll">
+      <div style="height:16px;"></div>
+      <div class="balance-card">
+        <div class="bal-lbl">💰 Saldo Nastar Anda</div>
+        <div class="bal-amt" id="bal-disp">Rp 150.000</div>
+        <div class="bal-actions">
+          <button class="bal-btn" onclick="navTo('topup')"><span class="bal-btn-icon">💳</span>Top Up</button>
+          <button class="bal-btn" onclick="navTo('pickup')"><span class="bal-btn-icon">📦</span>Kirim</button>
+          <button class="bal-btn" onclick="navTo('tracking')"><span class="bal-btn-icon">🔍</span>Lacak</button>
+          <button class="bal-btn" onclick="openWA('Halo Nastar! 👋 Saya butuh bantuan.')"><span class="bal-btn-icon">💬</span>Bantuan</button>
+        </div>
+      </div>
+      <div class="section-title">Menu Layanan</div>
+      <div class="quick-grid">
+        <div class="quick-item" onclick="navTo('pickup')"><span class="quick-ico">📦</span><span class="quick-lbl">Kirim Paket</span></div>
+        <div class="quick-item" onclick="navTo('tracking')"><span class="quick-ico">🔍</span><span class="quick-lbl">Lacak Resi</span></div>
+        <div class="quick-item" onclick="navTo('topup')"><span class="quick-ico">💳</span><span class="quick-lbl">Top Up</span></div>
+        <div class="quick-item" onclick="openWA('Halo Nastar! Saya ingin bertanya tentang tarif pengiriman.')"><span class="quick-ico">📞</span><span class="quick-lbl">Hubungi CS</span></div>
+      </div>
+      <div class="section-title" style="margin-top:6px;">Aktivitas Terakhir</div>
+      <div class="card">
+        <div class="act-item">
+          <div class="act-ico done">✅</div>
+          <div class="act-info">
+            <div class="act-name">NSTR-2024-001</div>
+            <div class="act-route">📍 Jakarta → Bandung &nbsp;·&nbsp; 2 kg</div>
+          </div>
+          <span class="badge badge-done">Terkirim</span>
+        </div>
+        <div class="act-item">
+          <div class="act-ico transit">🚛</div>
+          <div class="act-info">
+            <div class="act-name">NSTR-2024-002</div>
+            <div class="act-route">📍 Surabaya → Bali &nbsp;·&nbsp; 3.5 kg</div>
+          </div>
+          <span class="badge badge-transit">Di Jalan</span>
+        </div>
+        <div class="act-item">
+          <div class="act-ico pickup">📦</div>
+          <div class="act-info">
+            <div class="act-name">NSTR-2024-003</div>
+            <div class="act-route">📍 Bekasi → Solo &nbsp;·&nbsp; 1 kg</div>
+          </div>
+          <span class="badge badge-pick">Dijemput</span>
+        </div>
+        <div class="act-item">
+          <div class="act-ico done">✅</div>
+          <div class="act-info">
+            <div class="act-name">NSTR-2024-004</div>
+            <div class="act-route">📍 Medan → Jakarta &nbsp;·&nbsp; 5 kg</div>
+          </div>
+          <span class="badge badge-done">Terkirim</span>
+        </div>
+      </div>
+      <div style="height:8px;"></div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item active" onclick="navTo('dash')"><span class="nav-ico">🏠</span><span class="nav-lbl">Beranda</span></div>
+      <div class="nav-item" onclick="navTo('pickup')"><span class="nav-ico">📦</span><span class="nav-lbl">Kirim</span></div>
+      <div class="nav-item" onclick="navTo('tracking')"><span class="nav-ico">🔍</span><span class="nav-lbl">Lacak</span></div>
+      <div class="nav-item" onclick="navTo('topup')"><span class="nav-ico">💳</span><span class="nav-lbl">Top Up</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════════ PICKUP ══════════════ -->
+  <div class="screen" id="s-pickup">
+    <div class="topbar">
+      <div class="topbar-row">
+        <div class="row gap12">
+          <button class="back-btn" onclick="navTo('dash')">←</button>
+          <div>
+            <div class="logo" style="font-size:20px;">📦 Kirim Paket</div>
+            <div class="topbar-sub">Isi detail pengiriman lengkap</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="body-scroll" style="padding:16px;padding-bottom:100px;">
+      <div class="form-grp">
+        <label class="form-lbl">👤 Nama Pengirim</label>
+        <input type="text" class="form-inp" id="pk-sender" placeholder="Nama lengkap pengirim">
+      </div>
+      <div class="form-grp">
+        <label class="form-lbl">📍 Alamat Penjemputan</label>
+        <input type="text" class="form-inp" id="pk-from" placeholder="Alamat lengkap + kota">
+      </div>
+      <div class="form-grp">
+        <label class="form-lbl">👤 Nama Penerima</label>
+        <input type="text" class="form-inp" id="pk-receiver" placeholder="Nama lengkap penerima">
+      </div>
+      <div class="form-grp">
+        <label class="form-lbl">🎯 Alamat Tujuan</label>
+        <input type="text" class="form-inp" id="pk-to" placeholder="Alamat tujuan + kota">
+      </div>
+      <div class="form-grp">
+        <label class="form-lbl">📞 HP Penerima</label>
+        <input type="tel" inputmode="numeric" pattern="[0-9]*" class="form-inp" id="pk-recvphone" placeholder="08xxxxxxxxxx">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-grp" style="margin-bottom:0;">
+          <label class="form-lbl">⚖️ Berat (kg)*</label>
+          <input type="number" inputmode="decimal" class="form-inp" id="pk-weight" placeholder="Cth: 2.5" min="0.1" step="0.1" oninput="calcOngkir()">
+        </div>
+        <div class="form-grp" style="margin-bottom:0;">
+          <label class="form-lbl">📦 Jenis Paket</label>
+          <select class="form-sel" id="pk-type">
+            <option>Reguler</option>
+            <option>Fragil</option>
+            <option>Dokumen</option>
+            <option>Elektronik</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grp mt14">
+        <label class="form-lbl">🗺️ Jenis Pengiriman*</label>
+        <select class="form-sel" id="pk-region" onchange="calcOngkir()">
+          <option value="">— Pilih Jenis —</option>
+          <option value="7000">Dalam Kota (Rp 7.000/kg)</option>
+          <option value="15000">Luar Kota (Rp 15.000/kg)</option>
+          <option value="45000">Luar Pulau (Rp 45.000/kg)</option>
+        </select>
+      </div>
+      <div class="price-box" id="ongkir-box" style="display:none;">
+        <div class="price-row"><span class="price-lbl">⚖️ Berat Paket</span><span class="price-val" id="pr-w">—</span></div>
+        <div class="price-row"><span class="price-lbl">📋 Tarif per kg</span><span class="price-val" id="pr-r">—</span></div>
+        <div class="price-row"><span class="price-lbl">💰 Total Ongkir</span><span class="price-total" id="pr-t">Rp 0</span></div>
+      </div>
+      <div class="form-grp">
+        <label class="form-lbl">📝 Catatan (Opsional)</label>
+        <input type="text" class="form-inp" id="pk-note" placeholder="Paket fragil, tangani dengan hati-hati, dll.">
+      </div>
+      <button class="btn btn-wa mt8" onclick="doPickup()">💬 Kirim Pesanan via WhatsApp</button>
+      <div style="height:8px;"></div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="navTo('dash')"><span class="nav-ico">🏠</span><span class="nav-lbl">Beranda</span></div>
+      <div class="nav-item active" onclick="navTo('pickup')"><span class="nav-ico">📦</span><span class="nav-lbl">Kirim</span></div>
+      <div class="nav-item" onclick="navTo('tracking')"><span class="nav-ico">🔍</span><span class="nav-lbl">Lacak</span></div>
+      <div class="nav-item" onclick="navTo('topup')"><span class="nav-ico">💳</span><span class="nav-lbl">Top Up</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════════ TRACKING ══════════════ -->
+  <div class="screen" id="s-tracking">
+    <div class="topbar">
+      <div class="topbar-row">
+        <div class="row gap12">
+          <button class="back-btn" onclick="navTo('dash')">←</button>
+          <div>
+            <div class="logo" style="font-size:20px;">🔍 Lacak Paket</div>
+            <div class="topbar-sub">Pantau status pengiriman Anda</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="body-scroll" style="padding:16px;padding-bottom:100px;">
+      <div style="display:flex;gap:8px;margin-bottom:4px;">
+        <input type="text" class="form-inp" id="tr-resi" placeholder="Masukkan nomor resi (cth: NSTR-2024-001)" style="flex:1;">
+        <button class="btn btn-primary btn-sm" onclick="doTrack()" style="flex-shrink:0;white-space:nowrap;">Lacak 🔍</button>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:16px;font-weight:500;">💡 Ketik nomor resi apa saja untuk demo</div>
+      <div id="tr-result" style="display:none;" class="fade-in">
+        <div class="card" style="text-align:center;padding:20px;">
+          <div style="font-size:12px;color:var(--muted);font-weight:700;letter-spacing:0.5px;text-transform:uppercase;">Nomor Resi</div>
+          <div style="font-size:20px;font-weight:900;color:var(--dark);margin:6px 0 14px;font-family:monospace;" id="tr-resi-show">—</div>
+          <span class="track-badge">✅ Paket sudah di Drop-Off</span>
+          <div style="margin-top:14px;display:flex;justify-content:center;gap:16px;font-size:12px;color:var(--muted);font-weight:600;">
+            <span>📦 2.5 kg</span><span>·</span><span>🗺️ Dalam Kota</span><span>·</span><span>🚀 Ekspres</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">📋 Timeline Pengiriman</div>
+          <ul class="tl">
+            <li class="tl-item">
+              <div class="tl-dot done">✅</div>
+              <div class="tl-body">
+                <div class="tl-time">Hari ini · 14:00 WIB</div>
+                <div class="tl-desc">Paket sudah di Drop-Off</div>
+                <div class="tl-loc">📍 Gudang Nastar — Jl. Raya Logistik, Jakarta Barat</div>
+              </div>
+            </li>
+            <li class="tl-item">
+              <div class="tl-dot done">🚛</div>
+              <div class="tl-body">
+                <div class="tl-time">Hari ini · 11:30 WIB</div>
+                <div class="tl-desc">Kurir telah menerima paket di lokasi Drop-Off</div>
+                <div class="tl-loc">📍 Lokasi Pengirim</div>
+              </div>
+            </li>
+            <li class="tl-item">
+              <div class="tl-dot done">📋</div>
+              <div class="tl-body">
+                <div class="tl-time">Hari ini · 10:15 WIB</div>
+                <div class="tl-desc">Pesanan dikonfirmasi & kurir ditugaskan</div>
+                <div class="tl-loc">📍 Sistem Nastar — Jakarta</div>
+              </div>
+            </li>
+            <li class="tl-item">
+              <div class="tl-dot done">💳</div>
+              <div class="tl-body">
+                <div class="tl-time">Hari ini · 09:52 WIB</div>
+                <div class="tl-desc">Pembayaran ongkir berhasil dikonfirmasi</div>
+                <div class="tl-loc">📍 Payment Gateway Nastar</div>
+              </div>
+            </li>
+            <li class="tl-item">
+              <div class="tl-dot wait">🚀</div>
+              <div class="tl-body">
+                <div class="tl-time">Estimasi besok · 10:00 WIB</div>
+                <div class="tl-desc">Paket dalam perjalanan menuju tujuan</div>
+                <div class="tl-loc">📍 Menuju alamat penerima</div>
+              </div>
+            </li>
+            <li class="tl-item">
+              <div class="tl-dot wait">📬</div>
+              <div class="tl-body">
+                <div class="tl-time">Estimasi besok · 14:00 WIB</div>
+                <div class="tl-desc">Paket tiba & diserahkan ke penerima</div>
+                <div class="tl-loc">📍 Alamat Penerima</div>
+              </div>
+            </li>
+          </ul>
+          <button class="btn btn-ghost mt8" onclick="openWA('Halo Nastar! Saya ingin menanyakan status resi ' + document.getElementById('tr-resi-show').textContent)">
+            💬 Tanya ke CS WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="navTo('dash')"><span class="nav-ico">🏠</span><span class="nav-lbl">Beranda</span></div>
+      <div class="nav-item" onclick="navTo('pickup')"><span class="nav-ico">📦</span><span class="nav-lbl">Kirim</span></div>
+      <div class="nav-item active" onclick="navTo('tracking')"><span class="nav-ico">🔍</span><span class="nav-lbl">Lacak</span></div>
+      <div class="nav-item" onclick="navTo('topup')"><span class="nav-ico">💳</span><span class="nav-lbl">Top Up</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════════ TOP UP ══════════════ -->
+  <div class="screen" id="s-topup">
+    <div class="topbar">
+      <div class="topbar-row">
+        <div class="row gap12">
+          <button class="back-btn" onclick="navTo('dash')">←</button>
+          <div>
+            <div class="logo" style="font-size:20px;">💳 Top Up Saldo</div>
+            <div class="topbar-sub">Pilih nominal & metode bayar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="body-scroll" style="padding:16px;padding-bottom:100px;">
+      <div class="form-grp">
+        <label class="form-lbl">💰 Nominal Top Up</label>
+        <div class="amt-grid">
+          <div class="amt-chip" onclick="pickAmt(50000,this)">Rp 50rb</div>
+          <div class="amt-chip" onclick="pickAmt(100000,this)">Rp 100rb</div>
+          <div class="amt-chip" onclick="pickAmt(200000,this)">Rp 200rb</div>
+          <div class="amt-chip" onclick="pickAmt(500000,this)">Rp 500rb</div>
+          <div class="amt-chip" onclick="pickAmt(1000000,this)">Rp 1 jt</div>
+          <div class="amt-chip" onclick="pickAmt(2000000,this)">Rp 2 jt</div>
+        </div>
+        <input type="number" inputmode="numeric" pattern="[0-9]*" class="form-inp" id="tu-amt" placeholder="Atau ketik nominal lain (min. Rp 10.000)" oninput="STATE.tuAmt=parseInt(this.value)||0">
+      </div>
+      <div class="form-grp">
+        <label class="form-lbl">🏦 Transfer Bank</label>
+        <div class="pay-grid">
+          <div class="pay-opt" onclick="pickPay('BCA','🏦',this)"><span class="pay-ico">🏦</span><div><div class="pay-name">BCA</div><div class="pay-sub">Bank Transfer</div></div></div>
+          <div class="pay-opt" onclick="pickPay('Mandiri','🟡',this)"><span class="pay-ico">🟡</span><div><div class="pay-name">Mandiri</div><div class="pay-sub">Bank Transfer</div></div></div>
+          <div class="pay-opt" onclick="pickPay('BNI','🔵',this)"><span class="pay-ico">🔵</span><div><div class="pay-name">BNI</div><div class="pay-sub">Bank Transfer</div></div></div>
+          <div class="pay-opt" onclick="pickPay('BRI','🔴',this)"><span class="pay-ico">🔴</span><div><div class="pay-name">BRI</div><div class="pay-sub">Bank Transfer</div></div></div>
+        </div>
+      </div>
+      <div class="form-grp">
+        <label class="form-lbl">📲 E-Wallet</label>
+        <div class="pay-grid">
+          <div class="pay-opt" onclick="pickPay('DANA','💙',this)"><span class="pay-ico">💙</span><div><div class="pay-name">DANA</div><div class="pay-sub">E-Wallet</div></div></div>
+          <div class="pay-opt" onclick="pickPay('GoPay','💚',this)"><span class="pay-ico">💚</span><div><div class="pay-name">GoPay</div><div class="pay-sub">E-Wallet</div></div></div>
+          <div class="pay-opt" onclick="pickPay('ShopeePay','🧡',this)"><span class="pay-ico">🧡</span><div><div class="pay-name">ShopeePay</div><div class="pay-sub">E-Wallet</div></div></div>
+          <div class="pay-opt" onclick="pickPay('OVO','💜',this)"><span class="pay-ico">💜</span><div><div class="pay-name">OVO</div><div class="pay-sub">E-Wallet</div></div></div>
+        </div>
+      </div>
+      <div class="form-grp">
+        <label class="form-lbl">⚡ Scan & Pay</label>
+        <div class="pay-opt qris-feat" onclick="pickPay('QRIS','📲',this)" style="display:flex;align-items:center;">
+          <span class="pay-ico">📲</span>
+          <div style="flex:1;">
+            <div class="pay-name">QRIS</div>
+            <div class="pay-sub">Semua Bank & E-Wallet diterima</div>
+          </div>
+          <span class="feat-badge">⭐ Favorit</span>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="doTopup()">Konfirmasi Top Up →</button>
+      <div style="height:8px;"></div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="navTo('dash')"><span class="nav-ico">🏠</span><span class="nav-lbl">Beranda</span></div>
+      <div class="nav-item" onclick="navTo('pickup')"><span class="nav-ico">📦</span><span class="nav-lbl">Kirim</span></div>
+      <div class="nav-item" onclick="navTo('tracking')"><span class="nav-ico">🔍</span><span class="nav-lbl">Lacak</span></div>
+      <div class="nav-item active" onclick="navTo('topup')"><span class="nav-ico">💳</span><span class="nav-lbl">Top Up</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════════ QRIS ══════════════ -->
+  <div class="screen" id="s-qris">
+    <div class="topbar">
+      <div class="topbar-row">
+        <div class="row gap12">
+          <button class="back-btn" onclick="goTo('s-topup');stopQR()">←</button>
+          <div>
+            <div class="logo" style="font-size:20px;">📲 QRIS Payment</div>
+            <div class="topbar-sub">Scan QR untuk membayar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="body-scroll" style="padding-bottom:40px;">
+      <div class="card" style="margin-top:16px;">
+        <div class="qr-wrap">
+          <div style="font-size:13px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Total Pembayaran</div>
+          <div style="font-size:34px;font-weight:900;color:var(--o1);margin:8px 0 18px;" id="qr-amt">Rp 0</div>
+          <div class="qr-frame">
+            <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+              <rect width="200" height="200" fill="white"/>
+              <rect x="12" y="12" width="52" height="52" rx="6" fill="none" stroke="#1A1209" stroke-width="5"/>
+              <rect x="22" y="22" width="32" height="32" rx="3" fill="#1A1209"/>
+              <rect x="136" y="12" width="52" height="52" rx="6" fill="none" stroke="#1A1209" stroke-width="5"/>
+              <rect x="146" y="22" width="32" height="32" rx="3" fill="#1A1209"/>
+              <rect x="12" y="136" width="52" height="52" rx="6" fill="none" stroke="#1A1209" stroke-width="5"/>
+              <rect x="22" y="146" width="32" height="32" rx="3" fill="#1A1209"/>
+              <rect x="76" y="12" width="8" height="8" fill="#1A1209"/><rect x="88" y="12" width="8" height="8" fill="#1A1209"/>
+              <rect x="76" y="24" width="8" height="8" fill="#1A1209"/><rect x="88" y="36" width="8" height="8" fill="#1A1209"/>
+              <rect x="100" y="12" width="8" height="8" fill="#1A1209"/><rect x="100" y="24" width="8" height="8" fill="#1A1209"/>
+              <rect x="112" y="12" width="8" height="8" fill="#1A1209"/><rect x="112" y="36" width="8" height="8" fill="#1A1209"/>
+              <rect x="76" y="48" width="8" height="8" fill="#1A1209"/><rect x="100" y="48" width="8" height="8" fill="#1A1209"/>
+              <rect x="124" y="12" width="8" height="8" fill="#1A1209"/>
+              <rect x="12" y="76" width="8" height="8" fill="#1A1209"/><rect x="24" y="76" width="8" height="8" fill="#1A1209"/>
+              <rect x="12" y="88" width="8" height="8" fill="#1A1209"/><rect x="36" y="76" width="8" height="8" fill="#1A1209"/>
+              <rect x="48" y="76" width="8" height="8" fill="#1A1209"/><rect x="48" y="88" width="8" height="8" fill="#1A1209"/>
+              <rect x="60" y="76" width="8" height="8" fill="#1A1209"/><rect x="24" y="100" width="8" height="8" fill="#1A1209"/>
+              <rect x="36" y="88" width="8" height="8" fill="#1A1209"/>
+              <rect x="76" y="76" width="8" height="8" fill="#1A1209"/><rect x="88" y="76" width="8" height="8" fill="#1A1209"/>
+              <rect x="76" y="88" width="8" height="8" fill="#1A1209"/><rect x="100" y="76" width="8" height="8" fill="#1A1209"/>
+              <rect x="112" y="76" width="8" height="8" fill="#1A1209"/><rect x="112" y="88" width="8" height="8" fill="#1A1209"/>
+              <rect x="124" y="76" width="8" height="8" fill="#1A1209"/><rect x="136" y="76" width="8" height="8" fill="#1A1209"/>
+              <rect x="148" y="76" width="8" height="8" fill="#1A1209"/><rect x="160" y="76" width="8" height="8" fill="#1A1209"/>
+              <rect x="136" y="88" width="8" height="8" fill="#1A1209"/><rect x="160" y="88" width="8" height="8" fill="#1A1209"/>
+              <rect x="136" y="112" width="8" height="8" fill="#1A1209"/><rect x="148" y="100" width="8" height="8" fill="#1A1209"/>
+              <rect x="160" y="112" width="8" height="8" fill="#1A1209"/>
+              <rect x="76" y="100" width="8" height="8" fill="#1A1209"/><rect x="88" y="100" width="8" height="8" fill="#1A1209"/>
+              <rect x="76" y="112" width="8" height="8" fill="#1A1209"/><rect x="100" y="112" width="8" height="8" fill="#1A1209"/>
+              <rect x="112" y="112" width="8" height="8" fill="#1A1209"/>
+              <rect x="76" y="124" width="8" height="8" fill="#1A1209"/><rect x="88" y="124" width="8" height="8" fill="#1A1209"/>
+              <rect x="76" y="136" width="8" height="8" fill="#1A1209"/><rect x="100" y="124" width="8" height="8" fill="#1A1209"/>
+              <rect x="112" y="124" width="8" height="8" fill="#1A1209"/><rect x="112" y="136" width="8" height="8" fill="#1A1209"/>
+              <rect x="76" y="148" width="8" height="8" fill="#1A1209"/><rect x="100" y="148" width="8" height="8" fill="#1A1209"/>
+              <rect x="88" y="148" width="8" height="8" fill="#1A1209"/>
+              <rect x="76" y="160" width="8" height="8" fill="#1A1209"/><rect x="88" y="160" width="8" height="8" fill="#1A1209"/>
+              <rect x="124" y="148" width="8" height="8" fill="#1A1209"/><rect x="124" y="160" width="8" height="8" fill="#1A1209"/>
+              <rect x="136" y="124" width="8" height="8" fill="#1A1209"/><rect x="148" y="124" width="8" height="8" fill="#1A1209"/>
+              <rect x="160" y="124" width="8" height="8" fill="#1A1209"/><rect x="136" y="136" width="8" height="8" fill="#1A1209"/>
+              <rect x="160" y="136" width="8" height="8" fill="#1A1209"/><rect x="136" y="148" width="8" height="8" fill="#1A1209"/>
+              <rect x="148" y="148" width="8" height="8" fill="#1A1209"/><rect x="136" y="160" width="8" height="8" fill="#1A1209"/>
+              <rect x="148" y="160" width="8" height="8" fill="#1A1209"/><rect x="160" y="148" width="8" height="8" fill="#1A1209"/>
+              <rect x="12" y="112" width="8" height="8" fill="#1A1209"/><rect x="24" y="112" width="8" height="8" fill="#1A1209"/>
+              <rect x="36" y="112" width="8" height="8" fill="#1A1209"/><rect x="48" y="112" width="8" height="8" fill="#1A1209"/>
+              <rect x="60" y="112" width="8" height="8" fill="#1A1209"/><rect x="12" y="124" width="8" height="8" fill="#1A1209"/>
+              <rect x="36" y="124" width="8" height="8" fill="#1A1209"/><rect x="48" y="136" width="8" height="8" fill="#1A1209"/>
+              <rect x="60" y="136" width="8" height="8" fill="#1A1209"/><rect x="12" y="148" width="8" height="8" fill="#1A1209"/>
+              <rect x="24" y="148" width="8" height="8" fill="#1A1209"/><rect x="60" y="148" width="8" height="8" fill="#1A1209"/>
+              <rect x="12" y="160" width="8" height="8" fill="#1A1209"/><rect x="24" y="160" width="8" height="8" fill="#1A1209"/>
+              <rect x="36" y="160" width="8" height="8" fill="#1A1209"/><rect x="48" y="160" width="8" height="8" fill="#1A1209"/>
+              <rect x="82" y="82" width="36" height="36" rx="5" fill="white"/>
+              <text x="100" y="108" font-size="26" text-anchor="middle" fill="#FF6B00">🚚</text>
+            </svg>
+          </div>
+          <div class="qr-timer" id="qr-cd">15:00</div>
+          <div class="qr-sub">⏱ QR berlaku 15 menit · Jangan tutup halaman ini</div>
+          <div style="margin-top:20px;display:flex;gap:10px;width:100%;max-width:280px;">
+            <button class="btn btn-outline btn-sm" style="flex:1;" onclick="saveQR()">💾 Simpan QR</button>
+            <button class="btn btn-wa btn-sm" style="flex:1;" onclick="confirmQRIS()">✅ Sudah Bayar</button>
+          </div>
+        </div>
+      </div>
+      <div style="background:#FFF5E8;border-radius:14px;padding:14px;margin:0 16px;font-size:13px;color:#92400E;font-weight:600;line-height:1.7;">
+        📋 <strong>Cara Bayar via QRIS:</strong><br>
+        1. Buka aplikasi mobile banking / e-wallet<br>
+        2. Pilih menu <em>Scan QR</em> atau <em>QRIS</em><br>
+        3. Scan kode di atas & konfirmasi jumlah<br>
+        4. Klik <em>"Sudah Bayar"</em> setelah sukses
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ NOTIFICATION ══════════════ -->
+  <div class="notif-overlay" id="notif" onclick="closeNotif(event)">
+    <div class="notif-sheet">
+      <span class="notif-ico" id="n-ico">✅</span>
+      <div class="notif-h" id="n-h">Berhasil!</div>
+      <div class="notif-msg" id="n-msg">Operasi berhasil.</div>
+      <button class="btn btn-primary" style="margin-top:24px;" id="n-btn">OK</button>
+    </div>
+  </div>
+
+</div><!-- #app -->
+
+<script src="js/app.js"></script>
+</body>
+</html>
